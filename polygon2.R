@@ -29,54 +29,86 @@ create.func <- function(order = 0) {
       tar1_x_vector <- c(tar1_x_vector, finalDf[i,order])
       tar1_y_vector <- c(tar1_y_vector, finalDf[i+1,order])
     } else if((i>=37) & (i<=78)) {
-      tar2_x_vector <- c(tar1_x_vector, finalDf[i,order])
-      tar2_y_vector <- c(tar1_y_vector, finalDf[i+1,order])
+      tar2_x_vector <- c(tar2_x_vector, finalDf[i,order])
+      tar2_y_vector <- c(tar2_y_vector, finalDf[i+1,order])
     } else if((i>=79) & (i<=114)) {
-      tar3_x_vector <- c(tar1_x_vector, finalDf[i,order])
-      tar3_y_vector <- c(tar1_y_vector, finalDf[i+1,order])
+      tar3_x_vector <- c(tar3_x_vector, finalDf[i,order])
+      tar3_y_vector <- c(tar3_y_vector, finalDf[i+1,order])
     }
   }
   
+  # 면1, 3 오차율 증폭
+  for(k in 1:12) {
+    if((k>=1 & k<=3)) {
+      tar1_y_vector[k] = tar1_y_vector[k] * 10
+      tar3_y_vector[k] = tar3_y_vector[k] * 10 
+    } else if((k>=4 & k<=6)) {
+      tar1_x_vector[k] = (tar1_x_vector[k] - 151.63) +151.63
+      tar3_x_vector[k] = (tar3_x_vector[k] - 151.63) +151.63
+    } else if((k>=7 & k<=9)) {
+      tar1_y_vector[k] = (tar1_y_vector[k] -107.45) + 107.45 
+      tar3_y_vector[k] = (tar3_y_vector[k] -107.45) + 107.45
+    } else if((k>=10 & k<=12)) {
+      tar1_x_vector[k] = tar1_x_vector[k] * 10
+      tar3_x_vector[k] = tar3_x_vector[k] * 10
+    }
+  }
   
-    tar1_x_vector <- append(tar1_x_vector, 0, after=(0))
-    tar2_x_vector <- append(tar2_x_vector, 0, after=(0))
-    tar3_x_vector <- append(tar3_x_vector, 0, after=(0))
-    tar1_y_vector <- append(tar1_y_vector, 0, after=(0))
-    tar2_y_vector <- append(tar2_y_vector, 0, after=(0))
-    tar3_y_vector <- append(tar3_y_vector, 0, after=(0))
+  # 면2 오차율 증폭
+  for(k in 1:14) {
+    if((k>=1 & k<=4)) {
+      tar2_y_vector[k] = tar2_y_vector[k] * 10
+    } else if((k>=5 & k<=7)) {
+      tar2_x_vector[k] = (tar2_x_vector[k] - 151.63) +151.63
+    } else if((k>=8 & k<=10)) {
+      tar2_y_vector[k] = (tar2_y_vector[k] -107.45) + 107.45 
+    } else if((k>=11 & k<=4)) {
+      tar2_x_vector[k] = tar2_x_vector[k] * 10
+    }
+  }
     
-    tar1_x_vector <- append(tar1_x_vector, 151.63, after=(4))
-    tar3_x_vector <- append(tar3_x_vector, 151.63, after=(4))
-    tar1_y_vector <- append(tar1_y_vector, 0, after=(4))
-    tar3_y_vector <- append(tar3_y_vector, 0, after=(4))
-    
-    tar1_x_vector <- append(tar1_x_vector, 151.63, after=(8))
-    tar3_x_vector <- append(tar3_x_vector, 151.63, after=(8))
-    tar1_y_vector <- append(tar1_y_vector, 107.545, after=(8))
-    tar3_y_vector <- append(tar3_y_vector, 107.545, after=(8))
-    
-    tar1_x_vector <- append(tar1_x_vector, 0, after=(12))
-    tar3_x_vector <- append(tar3_x_vector, 0, after=(12))
-    tar1_y_vector <- append(tar1_y_vector, 107.545, after=(12))
-    tar3_y_vector <- append(tar3_y_vector, 107.545, after=(12))
+  # 면 1, 2, 3 측정값 벡터에 꼭지점 4개 씩 삽입  
+  tar1_x_vector <- append(tar1_x_vector, 0, after=(0))
+  tar2_x_vector <- append(tar2_x_vector, 0, after=(0))
+  tar3_x_vector <- append(tar3_x_vector, 0, after=(0))
+  tar1_y_vector <- append(tar1_y_vector, 0, after=(0))
+  tar2_y_vector <- append(tar2_y_vector, 0, after=(0))
+  tar3_y_vector <- append(tar3_y_vector, 0, after=(0))
   
+  tar1_x_vector <- append(tar1_x_vector, 151.63, after=(4))
+  tar2_x_vector <- append(tar2_x_vector, 151.63, after=(5))
+  tar3_x_vector <- append(tar3_x_vector, 151.63, after=(4))
+  tar1_y_vector <- append(tar1_y_vector, 0, after=(4))
+  tar2_y_vector <- append(tar2_y_vector, 0, after=(5))
+  tar3_y_vector <- append(tar3_y_vector, 0, after=(4))
   
+  tar1_x_vector <- append(tar1_x_vector, 151.63, after=(8))
+  tar2_x_vector <- append(tar2_x_vector, 151.63, after=(9))
+  tar3_x_vector <- append(tar3_x_vector, 151.63, after=(8))
+  tar1_y_vector <- append(tar1_y_vector, 107.545, after=(8))
+  tar2_y_vector <- append(tar2_y_vector, 107.545, after=(9))
+  tar3_y_vector <- append(tar3_y_vector, 107.545, after=(8))
+    
+  tar1_x_vector <- append(tar1_x_vector, 0, after=(12))
+  tar2_x_vector <- append(tar2_x_vector, 0, after=(14))
+  tar3_x_vector <- append(tar3_x_vector, 0, after=(12))
+  tar1_y_vector <- append(tar1_y_vector, 107.545, after=(12))
+  tar2_y_vector <- append(tar2_y_vector, 107.545, after=(14))
+  tar3_y_vector <- append(tar3_y_vector, 107.545, after=(12))
+  
+  # 기준면 1, 2, 3 (오차가 0인 가상의 면) 추가
   std1_x_vector = c(0, 10, 75.8, 141.6, 151.63, 151.63, 151.63, 151.63, 151.63, 141.6, 75.8,10, 0, 0, 0, 0)
   std1_y_vector = c(0, 0, 0, 0, 0, 10, 53.75, 97.5, 107.545, 107.545, 107.545, 107.545, 107.545, 97.5, 53.75, 10)
-  
   std2_x_vector = c(0, 10, 53.9, 97.7, 141.6, 151.63, 151.63, 151.63, 151.63, 151.63, 141.6, 97.7, 53.9, 10, 0, 0, 0, 0)
   std2_y_vector = c(0, 0, 0, 0, 0, 0, 10, 53.75, 97.5, 107.545, 107.545, 107.545, 107.545, 107.545, 107.545, 97.5, 53.75, 10)
-  
   std3_x_vector <- std1_x_vector
   std3_y_vector <- std1_y_vector
   
-  print(std2_x_vector)
-  print(tar2_x_vector)
-  
+
   
   
     
-  
+  # 기준면, 측정면 별 zone 추가 및 평행이동
   group_a <- data.frame(x = std1_x_vector,
                         y = std1_y_vector,
                         zone = "s")
@@ -86,18 +118,17 @@ create.func <- function(order = 0) {
   group_c <- data.frame(x = std2_x_vector+100,
                         y = std2_y_vector+100,
                         zone = "s1")
-  
   group_d <- data.frame(x = tar2_x_vector+100,
                         y = tar2_y_vector+100,
                         zone = "t1")
   group_e <- data.frame(x = std3_x_vector+200,
                         y = std3_y_vector+200,
                         zone = "s2")
-  
   group_f <- data.frame(x = tar3_x_vector+200,
                         y = tar3_y_vector+200,
                         zone = "t2")
   
+  # 면 1, 2, 3 별로 기준면, 측정면 grouping
   dat1 <- rbind(group_a, group_b)
   
   dat2 <- rbind(group_c, group_d)
@@ -113,21 +144,15 @@ create.func <- function(order = 0) {
     geom_segment(aes(x = group_a[13,1], y = group_a[13,2], xend = group_e[13,1], yend = group_e[13,2])) + geom_segment(aes(x = group_a[9,1], y = group_a[9,2], xend = group_e[9,1], yend = group_e[9,2])) + 
     geom_segment(aes(x = group_a[5,1], y = group_a[5,2], xend = group_e[5,1], yend = group_e[5,2])) + geom_segment(x = group_a[1,1], y = group_a[1,2], xend = group_e[1,1], yend = group_e[1,2], linetype = "dotted") +
     scale_x_continuous(breaks = seq(0, 5, by = 0.1)) + scale_y_continuous(breaks = seq(0, 7, by = 0.1))
-  
-  
-    
-
 }
 
 
+# 사진 파일 저장할 경로 및 확장자 지정
 path <- "/Users/jhheo/"
 ext <- ".png"
 j <- 1
 
-
-
-for (i in seq(1, 2, 2)) {
-  
+for (i in seq(1:10)) {
   print(create.func(i))
   fullPath <- paste0(path,(paste0(j,ext))) 
   ggsave(file=fullPath)
