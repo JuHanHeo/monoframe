@@ -1,10 +1,14 @@
 
+# data frame transpose (행, 열 교환)
+tmpDf <- data.frame(rowdata50)
+finalDf <- as.data.frame(t(tmpDf))
+finalDf <- finalDf[-c(1),]
+
+
 create.func <- function(order = 0) {
   library(ggplot2)
   
-  tdf = data.frame(tdata)
-  sdf = data.frame(sdata)
-  
+  # 단면별 벡터 선언
   tar1_x_vector = c()
   tar2_x_vector = c()
   tar3_x_vector = c()
@@ -17,60 +21,81 @@ create.func <- function(order = 0) {
   std1_y_vector = c()
   std2_y_vector = c()
   std3_y_vector = c()
-  
-  # 시작점 (0,0) 으로 변경 ()
-  for(i in 2:ncol(tdf)) {
-    #df[order, i] plus minus x값
-    #df[order, i+1] plus minus y값
-  }
+
   
   #측정값 벡터, 표준값 벡터에 insert input data
-  for(i in 2:ncol(tdf)) {
-    if((i>= 2) & (i<=17)){
-      tar1_x_vector <- c(tar1_x_vector, tdf[order,i])
-      tar1_y_vector <- c(tar1_y_vector, tdf[order+1,i])
-      std1_x_vector <- c(std1_x_vector, sdf[1,i])
-      std1_y_vector <- c(std1_y_vector, sdf[2,i])
-    } else if((i>= 18) & (i<=35)){
-      tar2_x_vector <- c(tar2_x_vector, tdf[order,i])
-      tar2_y_vector <- c(tar2_y_vector, tdf[order+1,i])
-      std2_x_vector <- c(std2_x_vector, sdf[1,i])
-      std2_y_vector <- c(std2_y_vector, sdf[2,i])
-    } else if((i>= 36) & (i<=51)) {
-      tar3_x_vector <- c(tar3_x_vector, tdf[order,i])
-      tar3_y_vector <- c(tar3_y_vector, tdf[order+1,i])
-      std3_x_vector <- c(std3_x_vector, sdf[1,i])
-      std3_y_vector <- c(std3_y_vector, sdf[2,i])
+  for(i in seq(1,114,3)) {
+    if((i>=1) & (i<=36)) {
+      tar1_x_vector <- c(tar1_x_vector, finalDf[i,order])
+      tar1_y_vector <- c(tar1_y_vector, finalDf[i+1,order])
+    } else if((i>=37) & (i<=78)) {
+      tar2_x_vector <- c(tar1_x_vector, finalDf[i,order])
+      tar2_y_vector <- c(tar1_y_vector, finalDf[i+1,order])
+    } else if((i>=79) & (i<=114)) {
+      tar3_x_vector <- c(tar1_x_vector, finalDf[i,order])
+      tar3_y_vector <- c(tar1_y_vector, finalDf[i+1,order])
     }
   }
   
   
+    tar1_x_vector <- append(tar1_x_vector, 0, after=(0))
+    tar2_x_vector <- append(tar2_x_vector, 0, after=(0))
+    tar3_x_vector <- append(tar3_x_vector, 0, after=(0))
+    tar1_y_vector <- append(tar1_y_vector, 0, after=(0))
+    tar2_y_vector <- append(tar2_y_vector, 0, after=(0))
+    tar3_y_vector <- append(tar3_y_vector, 0, after=(0))
+    
+    tar1_x_vector <- append(tar1_x_vector, 151.63, after=(4))
+    tar3_x_vector <- append(tar3_x_vector, 151.63, after=(4))
+    tar1_y_vector <- append(tar1_y_vector, 0, after=(4))
+    tar3_y_vector <- append(tar3_y_vector, 0, after=(4))
+    
+    tar1_x_vector <- append(tar1_x_vector, 151.63, after=(8))
+    tar3_x_vector <- append(tar3_x_vector, 151.63, after=(8))
+    tar1_y_vector <- append(tar1_y_vector, 107.545, after=(8))
+    tar3_y_vector <- append(tar3_y_vector, 107.545, after=(8))
+    
+    tar1_x_vector <- append(tar1_x_vector, 0, after=(12))
+    tar3_x_vector <- append(tar3_x_vector, 0, after=(12))
+    tar1_y_vector <- append(tar1_y_vector, 107.545, after=(12))
+    tar3_y_vector <- append(tar3_y_vector, 107.545, after=(12))
   
-  x_set = c(0, 0.5, 1.0, 1.5, 2, 2, 2, 2, 2, 1.6, 1.2, 0.8, 0.4, 0, 0, 0, 0)
-  y_set = c(0, 0, 0, 0, 0, 0.5, 1, 1.5, 2, 2, 2, 2, 2, 2, 1.5, 1, 0.5)
-  tx_set = c(0, 0.4, 0.8, 1.2, 1.6, 2, 2, 2, 2, 2, 1.6, 1.2, 0.8, 0.4, 0, 0, 0, 0)
-  ty_set = c(0, 0, -0.05, -0.04, 0, 0, 0.5, 1, 1.5, 2, 2, 1.90, 1.95, 2, 2, 1.5, 1, 0.5)
   
-  ty_set2 = c(0, 0, -0.05, -0.04, 0, 0, 0.5, 1, 1.5, 2, 2, 2.15, 2.1, 2, 2, 1.5, 1, 0.5)
+  std1_x_vector = c(0, 10, 75.8, 141.6, 151.63, 151.63, 151.63, 151.63, 151.63, 141.6, 75.8,10, 0, 0, 0, 0)
+  std1_y_vector = c(0, 0, 0, 0, 0, 10, 53.75, 97.5, 107.545, 107.545, 107.545, 107.545, 107.545, 97.5, 53.75, 10)
+  
+  std2_x_vector = c(0, 10, 53.9, 97.7, 141.6, 151.63, 151.63, 151.63, 151.63, 151.63, 141.6, 97.7, 53.9, 10, 0, 0, 0, 0)
+  std2_y_vector = c(0, 0, 0, 0, 0, 0, 10, 53.75, 97.5, 107.545, 107.545, 107.545, 107.545, 107.545, 107.545, 97.5, 53.75, 10)
+  
+  std3_x_vector <- std1_x_vector
+  std3_y_vector <- std1_y_vector
+  
+  print(std2_x_vector)
+  print(tar2_x_vector)
+  
+  
+  
+    
+  
   group_a <- data.frame(x = std1_x_vector,
                         y = std1_y_vector,
                         zone = "s")
   group_b <- data.frame(x = tar1_x_vector,
                         y = tar1_y_vector,
                         zone = "t")
-  group_c <- data.frame(x = std2_x_vector,
-                        y = std2_y_vector,
+  group_c <- data.frame(x = std2_x_vector+100,
+                        y = std2_y_vector+100,
                         zone = "s1")
   
-  group_d <- data.frame(x = tar2_x_vector,
-                        y = tar2_y_vector,
+  group_d <- data.frame(x = tar2_x_vector+100,
+                        y = tar2_y_vector+100,
                         zone = "t1")
-  group_e <- data.frame(x = std3_x_vector,
-                        y = std3_y_vector,
+  group_e <- data.frame(x = std3_x_vector+200,
+                        y = std3_y_vector+200,
                         zone = "s2")
   
-  group_f <- data.frame(x = tar3_x_vector,
-                        y = tar3_y_vector,
+  group_f <- data.frame(x = tar3_x_vector+200,
+                        y = tar3_y_vector+200,
                         zone = "t2")
   
   dat1 <- rbind(group_a, group_b)
@@ -80,9 +105,7 @@ create.func <- function(order = 0) {
   dat3 <- rbind(group_e, group_f)
   
   dat4 <- rbind(dat1, dat2, dat3)
-  
-  d=data.frame(a=c("a","b","c","d","e","f","g","h", "i", "j", "k", "l"))
-
+ 
   
   ggplot(dat4, aes(x = x, y = y, col = zone)) + geom_polygon(alpha = 0) + 
     geom_point(size=1) +
@@ -96,11 +119,14 @@ create.func <- function(order = 0) {
 
 }
 
-path <- "/Users/jhheo/"
 
+path <- "/Users/jhheo/"
 ext <- ".png"
 j <- 1
-for (i in seq(1, 20, 2)) {
+
+
+
+for (i in seq(1, 2, 2)) {
   
   print(create.func(i))
   fullPath <- paste0(path,(paste0(j,ext))) 
