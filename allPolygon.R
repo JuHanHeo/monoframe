@@ -8,7 +8,7 @@ cnt = ncol(finalDf)
 cnt2 = cnt-1  
 
 # 누적 그래프 사용 여부 (누적 그래프 출력 시 TRUE / 개별 사진 및 동영상 출력 시 FALSE)
-isAll = FALSE
+isAll = TRUE
 
 # 오차 증폭값 (n배 증폭)
 multi = 10
@@ -20,13 +20,10 @@ allImageName = "all" #누적 그래프 출려시에만 사용
 
 
 create.func <- function(order = 0) {
-
-  
   if(isAll == FALSE) {
     cnt = 1
     cnt2 = 0
   }
-  
     
   # ggplot2 패키치 설치 필요
   library(ggplot2)
@@ -48,6 +45,11 @@ create.func <- function(order = 0) {
   
   #측정값 벡터, 표준값 벡터에 insert input data
   for(o in seq(1:cnt)) {
+    if(isAll == TRUE) {
+      o = o
+    } else {
+      o = order
+    }
     for(i in seq(1,114,3)) {
       if((i>=1) & (i<=36)) {
         tar1_x_vector <- c(tar1_x_vector, finalDf[i,o])
@@ -201,7 +203,7 @@ create.func <- function(order = 0) {
   
   
   ggplot(dat4, aes(x = x, y = y, col = zone, size=factor(width))) + geom_polygon(alpha = 0) + 
-    geom_point(size=0.5) + scale_size_manual(breaks = c("s", "t", "s1", "t1", "s2", "t2"), values = c(0.1,1.5,0.1,1.5,0.1,1.5)) +
+    geom_point(size=0.5) + scale_size_manual(breaks = c("s", "t", "s1", "t1", "s2", "t2"), values = c(0.3,1.5,0.3,1.5,0.3,1.5)) +
     scale_color_manual(breaks = c("s", "t", "s1", "t1", "s2", "t2"), values=c("#525252", "red", "#525252", "red", "#525252", "red")) +
     geom_segment(aes(x = group_a[13,1], y = group_a[13,2], xend = group_e[13,1], yend = group_e[13,2])) + geom_segment(aes(x = group_a[9,1], y = group_a[9,2], xend = group_e[9,1], yend = group_e[9,2])) + 
     geom_segment(aes(x = group_a[5,1], y = group_a[5,2], xend = group_e[5,1], yend = group_e[5,2])) + geom_segment(x = group_a[1,1], y = group_a[1,2], xend = group_e[1,1], yend = group_e[1,2], linetype = "dotted") +
@@ -218,15 +220,16 @@ if(isAll == TRUE) {
   ggsave(file=fullPath)
 } else {
   j <- 1
-  for (i in 1:3) {
+  for (i in 1:cnt) {
     print(create.func(i))
     fullPath <- paste0(path,(paste0(j,ext))) 
     ggsave(file=fullPath)
     j <- j + 1
   }  
+  system("ffmpeg -framerate 1 -i /Users/jhheo/%d.jpg -vcodec libx264 -vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" -b 3200k -acodec aac -strict experimental -ab 3200k -threads 0 -map_metadata -1 -y /Users/jhheo/Desktop/output-test.mp4")
 }
 
 
 
 
-#system("ffmpeg -framerate 1 -i /Users/jhheo/%d.jpg -vcodec libx264 -vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" -b 6400k -acodec aac -strict experimental -ab 6400k -threads 0 -map_metadata -1 -y /Users/jhheo/Desktop/output-test.mp4")
+
